@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
 *
 *	Classe Youtube
 *
@@ -12,75 +12,168 @@ define('SEARCH_VIDEOS', 'http://gdata.youtube.com/feeds/api/videos');
 
 class Youtube{
 
-	/*
+	/**
 	*
 	*	Versão da API de dados do Youtube
 	*
 	*	@since 1.0
+	*	@var string
 	*/
 	private $v = '2';
 	
-	/*
+	/**
 	*
 	*	ID do usuário ou canal no Youtube
 	*
 	*	@since 1.0
+	*	@var string
 	*/
 	private $author = '';
 
-	/*
+	/**
 	*
 	*	Número máximo de vídeos que devem aparecer
 	*
 	*	@since 1.0
+	*	@var int
 	*/
 	private $max_results = '';
 
-	/*
+	/**
 	*
 	*	Parâmetro usado para que a API do Youtube
 	*	rejeite ou não parâmetros inválidos	
 	*
 	*	@since 1.0
+	*	@var string
 	*/
 	private $strict = 'true';
 
-	/*
+	/**
 	*
 	*	Índice do primeiro vídeo da lista	
 	*
 	*	@since 1.0
+	*	@var int
 	*/
 	private $start_index = '1';
 
-	/*
+	/**
 	*
 	*	Formato do feed que será retornado
 	*
 	*	@since 1.0
+	*	@var string
 	*/
 	private $alt = 'atom';
 
-	/*
+	/**
 	*
 	*	Chamada da função de retorno
 	*	OBS: Usado somente quando alt for
 	*	json-in-script
 	*
 	*	@since 1.0
+	*	@var string
 	*/
 	private $callback = '';
 
-	/*
+	/**
+	*
+	*	Recupera vídeos de uma categoria
+	*	específica
+	*
+	*	@since 1.8
+	*	@var string
+	*/
+	private $category = '';
+
+	/**
+	*
+	*	String alfanumérica que identifica o seu aplicativo
+	*
+	*	@since 1.8
+	*	@var string
+	*/
+	private $client = '';
+
+	/**
+	*
+	*	Especifica que os vídeos devem estar disponíveis
+	*	em um formato de vídeo específico
+	*
+	*	@since 1.8
+	*	@var int
+	*/
+	private $format = '';
+
+	/**
+	*
+	*	Chave do desenvolvedor
+	*
+	*	@since 1.8
+	*	@var string
+	*/
+	private $key = '';
+
+	/**
+	*
+	*	Restringe a pesquisa a vídeos que têm um local
+	*	geográfico especificado nos seus metadados
+	*
+	*	@since 1.8
+	*	@var string
+	*/
+	private $location = '';
+
+	/**
+	*
+	*	Define uma área geográfica
+	*
+	*	@since 1.8
+	*	@var string
+	*/
+	private $location_radius = '';
+
+	/**
+	*
+	*	Restringe a pesquisa aos vídeos que possuem um título,
+	*	uma descrição ou palavras-chave em um idioma específico
+	*
+	*	@since 1.8
+	*	@var string
+	*/
+	private $lr = '';
+
+	/**
+	*
+	*	Usado para ordenar a lista de vídeos
+	*
+	*	@since 1.8
+	*	@var string
+	*/
+	private $orderby = '';
+
+	/**
+	*
+	*	Usado para consulta de vídeos
+	*
+	*	@since 1.8
+	*	@var string
+	*/
+	private $q = '';
+
+	/**
 	*
 	*	Array que será usado para montar a consulta
 	*
 	*	@since 1.0
+	*	@var array
 	*/
 	private $array_query = array();
 
 
-	/*
+	/**
 	*
 	*	Método construtor
 	*
@@ -88,7 +181,7 @@ class Youtube{
 	*/
 	public function __construct() {}
 
-	/*
+	/**
 	*
 	*	Métodos de acesso para as variáveis
 	*
@@ -123,6 +216,42 @@ class Youtube{
 	public function setCallback($callback){	$this->callback = $callback; }
 	public function getCallback(){ return $this->callback; }
 
+	/* CATEGORY */
+	public function setCategory($category){	$this->category = $category; }
+	public function getCategory(){ return $this->category; }
+
+	/* CLIENT */
+	public function setClient($client){	$this->client = $client; }
+	public function getClient(){ return $this->client; }
+
+	/* FORMAT */
+	public function setFormat($format){ $this->format = $format; }
+	public function getFormat(){ return $this->format; }
+
+	/* KEY */
+	public function setKey($key){ $this->key = $key; }
+	public function getKey(){ return $this->key; }
+
+	/* LOCATION */
+	public function setLocation($location){	$this->location = $location; }
+	public function getLocation(){ return $this->location; }
+
+	/* LOCATION RADIUS */
+	public function setLocationRadius($location_radius){ $this->location_radius = $location_radius; }
+	public function getLocationRadius(){ return $this->location_radius; }
+
+	/* LR */
+	public function setLr($lr){ $this->lr = $lr; }
+	public function getLr(){ return $this->lr; }
+
+	/* ORDERBY */
+	public function setOrderby($orderby){ $this->orderby = $orderby; }
+	public function getOrderby(){ return $this->orderby; }
+
+	/* Q */
+	public function setQ($q){ $this->q = $q; }
+	public function getQ(){ return $this->q; }
+
 	/* ARRAY QUERY */
 	public function getArrayQuery()
 	{
@@ -130,26 +259,28 @@ class Youtube{
 		return $this->array_query;
 	}
 
-	/*
+	/**
 	*
 	*	Função getUrl
 	*
 	*	Retorna a url dos dados
 	*
 	*	@since 1.0
+	*	@return String contendo a URL final
 	*/
 	public function getUrl()
 	{
 		return SEARCH_VIDEOS . '?' . $this->buildQuery();
 	}
 
-	/*
+	/**
 	*
 	*	Função buildArrayQuery
 	*
 	*	Monta a query em forma de array
 	*
 	*	@since 1.0
+	*	@return Array dos parâmetros
 	*/
 	private function buildArrayQuery()
 	{
@@ -160,17 +291,27 @@ class Youtube{
 			'strict' => $this->strict,
 			'start-index' => $this->start_index,
 			'alt' => $this->alt,
-			'callback' => $this->callback
+			'callback' => $this->callback,
+			'category' => $this->category,
+			'client' => $this->client,
+			'format' => $this->format,
+			'key' => $this->key,
+			'location' => $this->location,
+			'location-radius' => $this->location_radius,
+			'lr' => $this->lr,
+			'orderby' => $this->orderby,
+			'q' => $this->q
 		);
 	}
 
-	/*
+	/**
 	*
 	*	Função buildQuery
 	*
 	*	Monta a query em forma de string
 	*
 	*	@since 1.0
+	*	@return String contendo a query
 	*/
 	private function buildQuery()
 	{
@@ -179,7 +320,7 @@ class Youtube{
 		$arr_q = $this->array_query;
 
 		foreach ($arr_q as $key => $value) {
-			if ($value == '') {
+			if ($value == '' || $value == null) {
 				unset($arr_q[$key]);
 			}
 		}
@@ -187,7 +328,7 @@ class Youtube{
 		return http_build_query($arr_q);
 	}
 
-	/*
+	/**
 	*
 	*	Função getVideos
 	*
@@ -195,6 +336,7 @@ class Youtube{
 	*	informados
 	*
 	*	@since 1.0
+	*	@return Retorna os vídeos de acordo com a consulta
 	*/
 	public function getVideos()
 	{
@@ -211,7 +353,7 @@ class Youtube{
 		}
 	}
 
-	/*
+	/**
 	*
 	*	Função getVideosaAtom
 	*
@@ -219,6 +361,7 @@ class Youtube{
 	*	no formato Atom
 	*
 	*	@since 1.0
+	*	@return Resultado da consulta pelo formato Atom
 	*/
 	protected function getVideosAtom()
 	{
@@ -239,16 +382,16 @@ class Youtube{
 			$yt = $media->children('http://gdata.youtube.com/schemas/2007');
 
 			$arr_result[] = array(
-				'id' => $yt->videoid,
-				'author' => $entry->author->name,
-				'published' => $entry->published,
-				'updated' => $entry->updated,
-				'title' => $entry->title,
+				'id' => (string) $yt->videoid,
+				'author' => (string) $entry->author->name,
+				'published' => (string) $entry->published,
+				'updated' => (string) $entry->updated,
+				'title' => (string) $entry->title,
 				'thumbnail' => 'http://i.ytimg.com/vi/' . $yt->videoid . '/hqdefault.jpg',
-				'description' => $media->group->description,
+				'description' => (string) $media->group->description,
 				'category' => array(
-					'name' => $media->group->category,
-					'label' => $media->group->category->attributes()['label']
+					'name' => (string) $media->group->category,
+					'label' => (string) $media->group->category->attributes()['label']
 				)
 			);
 		}
@@ -256,7 +399,7 @@ class Youtube{
 		return $arr_result;
 	}
 
-	/*
+	/**
 	*
 	*	Função getVideosRss
 	*
@@ -264,6 +407,7 @@ class Youtube{
 	*	no formato RSS
 	*
 	*	@since 1.0
+	*	@return Resultado da consulta pelo formato Rss
 	*/
 	protected function getVideosRss()
 	{
@@ -285,16 +429,16 @@ class Youtube{
 			$yt = $media->children('http://gdata.youtube.com/schemas/2007');
 
 			$arr_result[] = array(
-				'id' => $yt->videoid,
-				'author' => $item->author,
-				'pubDate' => $item->pubDate,
-				'updated' => $atom->updated,
-				'title' => $item->title,
+				'id' => (string) $yt->videoid,
+				'author' => (string) $item->author,
+				'pubDate' => (string) $item->pubDate,
+				'updated' => (string) $atom->updated,
+				'title' => (string) $item->title,
 				'thumbnail' => 'http://i.ytimg.com/vi/' . $yt->videoid . '/hqdefault.jpg',
-				'description' => $media->group->description,
+				'description' => (string) $media->group->description,
 				'category' => array(
-					'name' => $media->group->category,
-					'label' => $media->group->category->attributes()['label']
+					'name' => (string) $media->group->category,
+					'label' => (string) $media->group->category->attributes()['label']
 				)
 			);
 		}
@@ -302,7 +446,7 @@ class Youtube{
 		return $arr_result;
 	}
 
-	/*
+	/**
 	*
 	*	Função getVideosJson
 	*
@@ -310,13 +454,14 @@ class Youtube{
 	*	no formato Json
 	*
 	*	@since 1.0
+	*	@return Resultado da consulta pelo formato Json
 	*/
 	protected function getVideosJson()
 	{
 		$query = $this->buildQuery();
 	}
 
-	/*
+	/**
 	*
 	*	Função getVideosJsonScript
 	*
@@ -324,6 +469,7 @@ class Youtube{
 	*	no formato json-in-script
 	*
 	*	@since 1.0
+	*	@return Resultado da consulta pelo formato json-in-script
 	*/
 	protected function getVideosJsonScript()
 	{
