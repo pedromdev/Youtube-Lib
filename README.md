@@ -15,7 +15,7 @@ Biblioteca criada para o melhor funcionamento do parser de dados retirados do Yo
 			<th colspan="4"><h2>Variáveis presentes</h2></th>
 		</tr>
 		<tr>
-			<th>Nome da variável</th>
+			<th>Variável</th>
 			<th>Função</th>
 			<th>Métodos de acesso</th>
 			<th>Valores</th>
@@ -206,6 +206,96 @@ Biblioteca criada para o melhor funcionamento do parser de dados retirados do Yo
 Fonte: <a href="https://developers.google.com/youtube/2.0/developers_guide_protocol_api_query_parameters">
 	YouTube API v2.0 – API Query Parameters
 </a>
+
+<h2>Exemplo</h2>
+
+<b>Código</b>
+
+```php
+$youtube = new Youtube();
+
+$youtube->setAuthor('darksk8erbmx');
+$youtube->setMaxResults(4);
+$youtube->setStartIndex(2);
+
+print_r($youtube->getVideos());
+```
+
+<b>Saída</b>
+
+<pre>
+Array
+(
+    [0] => Array
+        (
+            [id] => 3t3Uiq_myEU
+            [author] => Pedro Marcelo
+            [published] => 2012-07-13T01:31:07.000Z
+            [updated] => 2012-12-28T11:08:26.000Z
+            [title] => Dragon Nest - xDNNx vs LSjow - Swordmaster vs Mercenario - Parte 1
+            [thumbnail] => http://i.ytimg.com/vi/3t3Uiq_myEU/hqdefault.jpg
+            [description] => Pvp basico da volta de LSjow (enferrujado)
+            [category] => Array
+                (
+                    [name] => Games
+                    [label] => Gaming
+                )
+
+        )
+
+    [1] => Array
+        (
+            [id] => IvvuZsY71u4
+            [author] => Pedro Marcelo
+            [published] => 2013-08-18T13:32:49.000Z
+            [updated] => 2014-01-05T09:58:08.000Z
+            [title] => Assassin level 11 Dragon Nest
+            [thumbnail] => http://i.ytimg.com/vi/IvvuZsY71u4/hqdefault.jpg
+            [description] => 
+            [category] => Array
+                (
+                    [name] => Games
+                    [label] => Gaming
+                )
+
+        )
+
+    [2] => Array
+        (
+            [id] => ANxrUvnKGHM
+            [author] => Pedro Marcelo
+            [published] => 2009-10-13T18:25:41.000Z
+            [updated] => 2013-11-19T20:28:41.000Z
+            [title] => Baldurs Gate Dark Alliance - By Pedro Dark
+            [thumbnail] => http://i.ytimg.com/vi/ANxrUvnKGHM/hqdefault.jpg
+            [description] => Chars do jogo, builds utilizadas e teste de build.
+            [category] => Array
+                (
+                    [name] => Games
+                    [label] => Gaming
+                )
+
+        )
+
+    [3] => Array
+        (
+            [id] => CPTrBzssPDU
+            [author] => Pedro Marcelo
+            [published] => 2012-10-06T22:24:36.000Z
+            [updated] => 2012-10-06T22:45:13.000Z
+            [title] => xDNNx - Manticore Nest (Solo)
+            [thumbnail] => http://i.ytimg.com/vi/CPTrBzssPDU/hqdefault.jpg
+            [description] => 
+            [category] => Array
+                (
+                    [name] => Games
+                    [label] => Gaming
+                )
+
+        )
+
+)
+</pre>
 
 <h2>Log de mudanças</h2>
 <ul>
