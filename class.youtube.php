@@ -5,7 +5,7 @@
 *	Classe Youtube
 *
 *	@author Pedro Marcelo de Sá Alves
-*	@version 1.0
+*	@version 1.9
 */
 
 define('SEARCH_VIDEOS', 'http://gdata.youtube.com/feeds/api/videos');
@@ -327,7 +327,50 @@ class Youtube{
 
 		return http_build_query($arr_q);
 	}
+	
+	/**
+	*
+	*	Função getVideoById
+	*
+	*	Retorna o vídeo conforme o ID informado
+	*
+	*	@since 1.9
+	*	@return Retorna o vídeo de acordo com o ID informado
+	*/
+	public function getVideoById($video_id)
+	{
+		$curl = curl_init(SEARCH_VIDEOS . '/' . $video_id);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+		$result = curl_exec($curl);
+		curl_close($curl);
 
+		$result = new SimpleXMLElement($result);
+
+		$arr_result = array();
+
+		$media = $result->children('http://search.yahoo.com/mrss/');
+		$yt = $media->children('http://gdata.youtube.com/schemas/2007');
+		
+		$category_label = $media->group->category->attributes();
+			
+		$arr_result = array(
+			'id' => (string) $video_id,
+			'author' => (string) $result->author->name,
+			'published' => (string) $result->published,
+			'updated' => (string) $result->updated,
+			'title' => (string) $media->group->title,
+			'thumbnail' => 'http://i.ytimg.com/vi/' . $video_id . '/hqdefault.jpg',
+			'description' => (string) $media->group->description,
+			'category' => array(
+				'name' => (string) $media->group->category,
+				'label' => (string) $category_label['label']
+			)
+		);
+
+		return $arr_result;
+	}
+	
 	/**
 	*
 	*	Função getVideos
@@ -380,7 +423,9 @@ class Youtube{
 		foreach ($result->entry as $entry) {
 			$media = $entry->children('http://search.yahoo.com/mrss/');
 			$yt = $media->children('http://gdata.youtube.com/schemas/2007');
-
+			
+			$category_label = $media->group->category->attributes();
+			
 			$arr_result[] = array(
 				'id' => (string) $yt->videoid,
 				'author' => (string) $entry->author->name,
@@ -391,7 +436,7 @@ class Youtube{
 				'description' => (string) $media->group->description,
 				'category' => array(
 					'name' => (string) $media->group->category,
-					'label' => (string) $media->group->category->attributes()['label']
+					'label' => (string) $category_label['label']
 				)
 			);
 		}
@@ -427,7 +472,9 @@ class Youtube{
 			$media = $item->children('http://search.yahoo.com/mrss/');
 			$atom = $item->children('http://www.w3.org/2005/Atom');
 			$yt = $media->children('http://gdata.youtube.com/schemas/2007');
-
+			
+			$category_label = $media->group->category->attributes();
+			
 			$arr_result[] = array(
 				'id' => (string) $yt->videoid,
 				'author' => (string) $item->author,
@@ -438,7 +485,7 @@ class Youtube{
 				'description' => (string) $media->group->description,
 				'category' => array(
 					'name' => (string) $media->group->category,
-					'label' => (string) $media->group->category->attributes()['label']
+					'label' => (string) $category_label['label']
 				)
 			);
 		}
