@@ -202,7 +202,7 @@ Biblioteca criada para o melhor funcionamento do parser de dados retirados do Yo
 		</tr>
 	</tbody>
 </table>
-<br><br>
+<br>
 Fonte: <a href="https://developers.google.com/youtube/2.0/developers_guide_protocol_api_query_parameters">
 	YouTube API v2.0 – API Query Parameters
 </a>
