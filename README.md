@@ -176,7 +176,7 @@ Biblioteca criada para o melhor funcionamento do parser de dados retirados do Yo
 			</td>
 			<td>Strings (<a href="http://www.loc.gov/standards/iso639-2/php/code_list.php">
 				códigos de idioma formados por duas letras e definidos pela ISO 639-1
-			</a></td>
+			</a>)</td>
 		</tr>
 		<tr>
 			<td><b>orderby</b></td>
