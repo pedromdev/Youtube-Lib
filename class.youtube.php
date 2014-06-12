@@ -5,7 +5,7 @@
 *	Classe Youtube
 *
 *	@author Pedro Marcelo de Sá Alves
-*	@version 1.9
+*	@version 1.10.1
 */
 
 define('SEARCH_VIDEOS', 'http://gdata.youtube.com/feeds/api/videos');
