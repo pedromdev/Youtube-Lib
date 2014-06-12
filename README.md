@@ -4,8 +4,8 @@ Youtube-Lib
 <b>Autor:</b> Pedro Marcelo de Sá Alves<br>
 <b>E-mail:</b> pedromarcelodesaalves@gmail.com<br>
 <b>Data de criação:</b> 14 de maio de 2014<br>
-<b>Última atualização:</b> 23 de maio de 2014<br>
-<b>Versão atual:</b> 1.9<br>
+<b>Última atualização:</b> 16 de junho de 2014<br>
+<b>Versão atual:</b> 1.10<br>
 
 Biblioteca criada para o melhor funcionamento do parser de dados retirados do Youtube.
 
@@ -299,6 +299,13 @@ Array
 
 <h2>Log de mudanças</h2>
 <ul>
+	<li>
+		<h3>1.10.1</h3>
+		<ul>
+			<li>Parser dos dados em JSON completo: método getVideosJson</li>
+			<li>Retirando as variáveis $query dos métodos de parser</li>
+		</ul>
+	</li>
 	<li>
 		<h3>1.9</h3>
 		<ul>
