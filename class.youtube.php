@@ -408,7 +408,7 @@ class Youtube{
 	*/
 	protected function getVideosAtom()
 	{
-		$query = $this->buildQuery();
+		$this->buildQuery();
 
 		$curl = curl_init($this->getUrl());
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -456,7 +456,7 @@ class Youtube{
 	*/
 	protected function getVideosRss()
 	{
-		$query = $this->buildQuery();
+		$this->buildQuery();
 
 		$curl = curl_init($this->getUrl());
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -505,7 +505,31 @@ class Youtube{
 	*/
 	protected function getVideosJson()
 	{
-		$query = $this->buildQuery();
+		$this->buildQuery();
+
+		$content = file_get_contents($this->getUrl());
+		$json = json_decode($content);
+
+		$arr_result = array();
+
+		foreach ($json->feed->entry as $video) {
+			$id = $video->{'media$group'}->{'yt$videoid'}->{'$t'};
+			$arr_result[] = array(
+				'id' =>  $id,
+				'author' => $video->author[0]->name->{'$t'},
+				'published' => $video->published->{'$t'},
+				'updated' => $video->updated->{'$t'},
+				'title' => $video->title->{'$t'},
+				'thumbnail' => 'http://i.ytimg.com/vi/' . $id . '/hqdefault.jpg',
+				'description' => $video->{'media$group'}->{'media$description'}->{'$t'},
+				'category' => array(
+					'name' => $video->{'media$group'}->{'media$category'}[0]->{'$t'},
+					'label' => $video->{'media$group'}->{'media$category'}[0]->label
+				)
+			);
+		}
+
+		return $arr_result;
 	}
 
 	/**
@@ -520,6 +544,6 @@ class Youtube{
 	*/
 	protected function getVideosJsonScript()
 	{
-		$query = $this->buildQuery();
+		$this->buildQuery();
 	}
 }
