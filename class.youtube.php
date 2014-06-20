@@ -5,7 +5,7 @@
 *	Classe Youtube
 *
 *	@author Pedro Marcelo de Sá Alves
-*	@version 1.9
+*	@version 1.12.4
 */
 
 define('SEARCH_VIDEOS', 'http://gdata.youtube.com/feeds/api/videos');
@@ -189,67 +189,264 @@ class Youtube{
 	*/
 
 	/* V */
-	public function setV($v){ $this->v = $v; }
+	public function setV($v)
+	{
+		if (intval($v) != 1 && intval($v) != 2)
+		{
+			$this->v = '2';
+		}
+		else
+		{
+			$this->v = $v;
+		}
+	}
+
 	public function getV(){ return $this->v; }
 
 	/* AUTHOR */
-	public function setAuthor($author){ $this->author = $author; }
+	public function setAuthor($author)
+	{
+		if (is_string($author))
+		{
+			$this->author = $author;
+		}
+		else
+		{
+			$this->author = '';
+		}
+	}
+
 	public function getAuthor(){ return $this->author; }
 
 	/* MAX RESULTS */
-	public function setMaxResults($max_results){ $this->max_results = $max_results; }
+	public function setMaxResults($max_results)
+	{
+		if (!is_numeric($max_results))
+		{
+			$this->max_results = '25';
+		}
+		else
+		{
+			$this->max_results = intval($max_results);
+		}
+	}
+
 	public function getMaxResults(){ return $this->max_results; }
 
 	/* STRICT */
-	public function setStrict($strict){ $this->strict = $strict; }
+	public function setStrict($strict)
+	{
+		if (is_string($strict))
+		{
+			if ($strict != 'true' && $strict != 'false')
+			{
+				$this->strict = 'true';
+			}
+			else
+			{
+				$this->strict = $strict;
+			}
+		}
+		else
+		{
+			$strict = http_build_query(array('key' => $strict));
+
+			if ($strict == 'key=1')
+			{
+				$this->strict = 'true';
+			}
+			elseif ($strict == 'key=0')
+			{
+				$this->strict = 'false';
+			}
+			else
+			{
+				$this->strict = 'true';
+			}
+		}
+		
+	}
+
 	public function getStrict(){ return $this->strict; }
 
 	/* START INDEX */
-	public function setStartIndex($start_index){ $this->start_index = $start_index; }
+	public function setStartIndex($start_index)
+	{
+		if (!is_numeric($start_index))
+		{
+			$this->start_index = '';
+		}
+		else
+		{
+			$this->start_index = intval($start_index);
+		}
+	}
+
 	public function getStartIndex(){ return $this->start_index; }
 
 	/* ALT */
-	public function setAlt($alt){ $this->alt = $alt; }
+	public function setAlt($alt)
+	{
+		$alt_arr = array('atom', 'rss', 'json', 'json-in-script');
+
+		if (!in_array($alt, $alt_arr))
+		{
+			$this->alt = 'atom';
+		}
+		else
+		{
+			$this->alt = $alt;
+		}
+	}
+
 	public function getAlt(){ return $this->alt; }
 
 	/* CALLBACK */
-	public function setCallback($callback){	$this->callback = $callback; }
+	public function setCallback($callback){
+		if (is_string($callback))
+		{
+			$this->callback = $callback;
+		}
+		else
+		{
+			$this->callback = '';
+		}
+	}
+
 	public function getCallback(){ return $this->callback; }
 
 	/* CATEGORY */
-	public function setCategory($category){	$this->category = $category; }
+	public function setCategory($category){
+		if (is_string($category))
+		{
+			$this->category = $category;
+		}
+		else
+		{
+			$this->category = '';
+		}
+	}
+
 	public function getCategory(){ return $this->category; }
 
 	/* CLIENT */
-	public function setClient($client){	$this->client = $client; }
+	public function setClient($client){
+		if (is_string($client))
+		{
+			$this->client = $client;
+		}
+		else
+		{
+			$this->client = '';
+		}
+	}
+
 	public function getClient(){ return $this->client; }
 
 	/* FORMAT */
-	public function setFormat($format){ $this->format = $format; }
+	public function setFormat($format){
+		if (is_string($format))
+		{
+			$this->format = $format;
+		}
+		else
+		{
+			$this->format = '';
+		}
+	}
+
 	public function getFormat(){ return $this->format; }
 
 	/* KEY */
-	public function setKey($key){ $this->key = $key; }
+	public function setKey($key){
+		if (is_string($key))
+		{
+			$this->key = $key;
+		}
+		else
+		{
+			$this->key = '';
+		}
+	}
+
 	public function getKey(){ return $this->key; }
 
 	/* LOCATION */
-	public function setLocation($location){	$this->location = $location; }
+	public function setLocation($location)
+	{
+		if (preg_match('/^-?(?:\d+|\d*\.\d+),-?(?:\d+|\d*\.\d+)$/', $location))
+		{
+			$this->location = $location;
+		}
+		else
+		{
+			$this->location = '';
+		}
+	}
+
 	public function getLocation(){ return $this->location; }
 
 	/* LOCATION RADIUS */
-	public function setLocationRadius($location_radius){ $this->location_radius = $location_radius; }
+	public function setLocationRadius($location_radius)
+	{
+		if (preg_match('/^(?:\d+|\d*\,\d+)(m|km|pés|mi)$/', $location_radius))
+		{
+			$this->location_radius = $location_radius;
+		}
+		else
+		{
+			$this->location_radius = '';
+		}
+	}
+
 	public function getLocationRadius(){ return $this->location_radius; }
 
 	/* LR */
-	public function setLr($lr){ $this->lr = $lr; }
+	public function setLr($lr)
+	{
+		if (is_string($lr) && strlen($lr) == 2)
+		{
+			$this->lr = $lr;
+		}
+		else
+		{
+			$this->lr = '';
+		}
+	}
+
 	public function getLr(){ return $this->lr; }
 
 	/* ORDERBY */
-	public function setOrderby($orderby){ $this->orderby = $orderby; }
+	public function setOrderby($orderby)
+	{
+		$orderby_arr = array('relevance', 'published', 'viewCount', 'rating');
+
+		if (!in_array($orderby, $orderby_arr))
+		{
+			$this->orderby = '';
+		}
+		else
+		{
+			$this->orderby = $orderby;
+		}
+	}
+
 	public function getOrderby(){ return $this->orderby; }
 
 	/* Q */
-	public function setQ($q){ $this->q = $q; }
+	public function setQ($q)
+	{
+		if (is_string($q))
+		{
+			$this->q = $this->escapeQuery($q);
+		}
+		else
+		{
+			$this->q = '';
+		}
+		
+	}
+
 	public function getQ(){ return $this->q; }
 
 	/* ARRAY QUERY */
@@ -257,6 +454,27 @@ class Youtube{
 	{
 		$this->buildArrayQuery();
 		return $this->array_query;
+	}
+
+	/**
+	*
+	*	Função escapeQuery
+	*
+	*	Retorna a uma string conforme o padrão
+	*	colocado pelo Youtube para consultas
+	*
+	*	@since 1.12.4
+	*	@return String
+	*/
+	private function escapeQuery($q)
+	{
+		$escapes = array(
+			' ' => '+',
+			"\"" => '%22',
+			'|' => '%7C'
+		);
+
+		return strtr($q, $escapes);
 	}
 
 	/**
