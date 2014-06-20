@@ -333,7 +333,7 @@ Array
 	<li>
 		<h3>1.12.4</h3>
 		<ul>
-			<li>Método escapeuQuery adicionado para adição de códigos de escape</li>
+			<li>Método escapeQuery adicionado para adição de códigos de escape</li>
 			<li>Adicionando validação aos métodos de acesso</li>
 		</ul>
 	</li>
