@@ -207,7 +207,7 @@ Fonte: <a href="https://developers.google.com/youtube/2.0/developers_guide_proto
 	YouTube API v2.0 – API Query Parameters
 </a>
 
-<h2>Exemplo</h2>
+<h2>Exemplos</h2>
 
 <b>Código</b>
 
@@ -297,8 +297,46 @@ Array
 )
 </pre>
 
+<b>Código</b>
+
+```php
+$youtube = new Youtube();
+
+$video = $youtube->getVideoById('3t3Uiq_myEU');
+
+print_r($video);
+```
+
+<b>Saída</b>
+
+<pre>
+Array
+(
+    [id] => 3t3Uiq_myEU
+    [author] => Pedro Marcelo
+    [published] => 2012-07-13T01:31:07.000Z
+    [updated] => 2012-12-28T11:08:26.000Z
+    [title] => Dragon Nest - xDNNx vs LSjow - Swordmaster vs Mercenario - Parte 1
+    [thumbnail] => http://i.ytimg.com/vi/3t3Uiq_myEU/hqdefault.jpg
+    [description] => Pvp basico da volta de LSjow (enferrujado)
+    [category] => Array
+        (
+            [name] => Games
+            [label] => Gaming
+        )
+
+)
+</pre>
+
 <h2>Log de mudanças</h2>
 <ul>
+	<li>
+		<h3>1.12.4</h3>
+		<ul>
+			<li>Método escapeuQuery adicionado para adição de códigos de escape</li>
+			<li>Adicionando validação aos métodos de acesso</li>
+		</ul>
+	</li>
 	<li>
 		<h3>1.10.1</h3>
 		<ul>
