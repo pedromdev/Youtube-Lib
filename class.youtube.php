@@ -5,10 +5,11 @@
 *	Classe Youtube
 *
 *	@author Pedro Marcelo de Sá Alves
-*	@version 1.12.4
+*	@version 1.13.1
 */
 
 define('SEARCH_VIDEOS', 'http://gdata.youtube.com/feeds/api/videos');
+define('CHANNEL_VIDEOS', 'http://gdata.youtube.com/feeds/api/users/%username%/uploads');
 
 class Youtube{
 
@@ -488,7 +489,7 @@ class Youtube{
 	*/
 	public function getUrl()
 	{
-		return SEARCH_VIDEOS . '?' . $this->buildQuery();
+		return strtr(CHANNEL_VIDEOS, array('%username%' => $this->author)) . '?' . $this->buildQuery();
 	}
 
 	/**
@@ -504,7 +505,6 @@ class Youtube{
 	{
 		$this->array_query = array(
 			'v' => $this->v,
-			'author' => $this->author,
 			'max-results' => $this->max_results,
 			'strict' => $this->strict,
 			'start-index' => $this->start_index,
@@ -545,7 +545,7 @@ class Youtube{
 
 		return http_build_query($arr_q);
 	}
-	
+
 	/**
 	*
 	*	Função getVideoById
@@ -557,11 +557,7 @@ class Youtube{
 	*/
 	public function getVideoById($video_id)
 	{
-		$curl = curl_init(SEARCH_VIDEOS . '/' . $video_id);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-		$result = curl_exec($curl);
-		curl_close($curl);
+		$result = file_get_contents(SEARCH_VIDEOS . '/' . $video_id);
 
 		$result = new SimpleXMLElement($result);
 
@@ -578,7 +574,7 @@ class Youtube{
 			'published' => (string) $result->published,
 			'updated' => (string) $result->updated,
 			'title' => (string) $media->group->title,
-			'thumbnail' => 'http://i.ytimg.com/vi/' . $video_id . '/hqdefault.jpg',
+			'thumbnail' => 'http://i.ytimg.com/vi/' . $video_id . '/mqdefault.jpg',
 			'description' => (string) $media->group->description,
 			'category' => array(
 				'name' => (string) $media->group->category,
@@ -627,12 +623,8 @@ class Youtube{
 	protected function getVideosAtom()
 	{
 		$this->buildQuery();
-
-		$curl = curl_init($this->getUrl());
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-		$result = curl_exec($curl);
-		curl_close($curl);
+		
+		$result = file_get_contents($this->getUrl());
 
 		$result = new SimpleXMLElement($result);
 
@@ -650,7 +642,7 @@ class Youtube{
 				'published' => (string) $entry->published,
 				'updated' => (string) $entry->updated,
 				'title' => (string) $entry->title,
-				'thumbnail' => 'http://i.ytimg.com/vi/' . $yt->videoid . '/hqdefault.jpg',
+				'thumbnail' => 'http://i.ytimg.com/vi/' . $yt->videoid . '/mqdefault.jpg',
 				'description' => (string) $media->group->description,
 				'category' => array(
 					'name' => (string) $media->group->category,
@@ -699,7 +691,7 @@ class Youtube{
 				'pubDate' => (string) $item->pubDate,
 				'updated' => (string) $atom->updated,
 				'title' => (string) $item->title,
-				'thumbnail' => 'http://i.ytimg.com/vi/' . $yt->videoid . '/hqdefault.jpg',
+				'thumbnail' => 'http://i.ytimg.com/vi/' . $yt->videoid . '/mqdefault.jpg',
 				'description' => (string) $media->group->description,
 				'category' => array(
 					'name' => (string) $media->group->category,
@@ -738,7 +730,7 @@ class Youtube{
 				'published' => $video->published->{'$t'},
 				'updated' => $video->updated->{'$t'},
 				'title' => $video->title->{'$t'},
-				'thumbnail' => 'http://i.ytimg.com/vi/' . $id . '/hqdefault.jpg',
+				'thumbnail' => 'http://i.ytimg.com/vi/' . $id . '/mqdefault.jpg',
 				'description' => $video->{'media$group'}->{'media$description'}->{'$t'},
 				'category' => array(
 					'name' => $video->{'media$group'}->{'media$category'}[0]->{'$t'},
