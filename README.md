@@ -5,7 +5,7 @@ Youtube-Lib
 <b>E-mail:</b> pedromarcelodesaalves@gmail.com<br>
 <b>Data de criação:</b> 14 de maio de 2014<br>
 <b>Última atualização:</b> 19 de junho de 2014<br>
-<b>Versão atual:</b> 1.12.4<br>
+<b>Versão atual:</b> 1.13.1<br>
 
 Biblioteca criada para o melhor funcionamento do parser de dados retirados do Youtube.
 
@@ -330,6 +330,12 @@ Array
 
 <h2>Log de mudanças</h2>
 <ul>
+	<li>
+		<h3>1.13.1</h3>
+		<ul>
+			<li>Adicionando url para canais. Corrigindo métodos getUrl() e buildArrayQuery() para receber a nova url</li>
+		</ul>
+	</li>
 	<li>
 		<h3>1.12.4</h3>
 		<ul>
